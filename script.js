@@ -38,3 +38,51 @@ contactForm.addEventListener("submit", async (event) => {
         submitButton.disabled = false;
     }
 });
+
+/* ---------- mobile nav toggle ---------- */
+const aside = document.querySelector(".aside");
+const navToggler = document.querySelector(".nav-toggler");
+const navLinks = document.querySelectorAll(".aside .nav a");
+
+// create an overlay element that dims the page behind the open sidebar on mobile
+const overlay = document.createElement("div");
+overlay.classList.add("aside-overlay");
+document.body.appendChild(overlay);
+
+function openNav() {
+    aside.classList.add("open");
+    navToggler.classList.add("open");
+    overlay.classList.add("show");
+}
+
+function closeNav() {
+    aside.classList.remove("open");
+    navToggler.classList.remove("open");
+    overlay.classList.remove("show");
+}
+
+navToggler.addEventListener("click", () => {
+    if (aside.classList.contains("open")) {
+        closeNav();
+    } else {
+        openNav();
+    }
+});
+
+overlay.addEventListener("click", closeNav);
+
+// close the menu automatically after tapping a link (mobile UX)
+navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+        navLinks.forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+        closeNav();
+    });
+});
+
+// keep things tidy if the viewport is resized back up to desktop
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 1199) {
+        closeNav();
+    }
+});
